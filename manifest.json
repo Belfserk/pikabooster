@@ -1,0 +1,12 @@
+{
+    "name": "Pikabooster",
+    "version": "1.0",
+    "description": "Расширение, улучшающее возможности сайта Pikabu",
+    "content_scripts": [
+        {
+            "matches": ["http://pikabu.ru/*"],
+            "js": ["jquery.js", "main.js"]
+        }
+    ],
+    "manifest_version": 2
+}
