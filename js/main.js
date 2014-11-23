@@ -3,7 +3,7 @@ var currentPost = $("#stories_container .inner_wrap:eq("+postIndex+")").attr("id
 //if (document.location.href.match(/*pikabu.ru/story*/)) currentPost = $("#wrap .inner_wrap").attr("id");
 
 runScroller();
-runKeyMapper();
+//runKeyMapper();
 runMenu();
 
 function runScroller() {
@@ -104,25 +104,24 @@ function runKeyMapper() {
 }
 
 function runMenu() {
+    var navigator = $('.b-navigator');
     var userName = $(".name a:first-child").html();
-    var userLink = "<a id='boosterUserName' href='http://pikabu.ru/profile/"+userName+"' target='blank'>"+userName+"</a>";
-    $('#p_prev_container').prepend(userLink).after('<div id="boosterMenu"></div>');
-    $('#boosterUserName').css("font","Normal 13px Tahoma").css('color','#686969').css('margin-right','5px').css('text-decoration','none');
-    $('#boosterMenu').html($('.personals').html()).css({'position': 'fixed','top': '35px','right': '40px','font': 'normal','display': 'none',
-        'font-size': '13px','font-family': 'Tahoma','color': 'rgb(104, 105, 105)','margin-right': '2px','text-decoration': 'none',
-        'background-color': '#e8e8e8','border-radius': '0px 0px 6px 6px','width': '166px','z-index': '50','box-shadow': 'rgb(163, 163, 163) 0px 0px 2px'});
-    $('#boosterMenu ul').css({'list-style': 'none','padding': '0'});
-    $('#boosterMenu li').css('padding','0 0 0 15px');
-    $('#boosterMenu span').css({'color': '#686969','padding': '0 0 0 15px','text-decoration': 'none','font-size': '11px','line-height': '17px'});
-    $('#boosterMenu a').css({'color': '#5190B8','padding': '0 0 0 15px','text-decoration': 'none','font-size': '11px','line-height': '17px'}).hover(function() {
-        $(this).css('text-decoration','underline');
-    },function() {$(this).css('text-decoration','none')});
+    var userLink = "<div id='boosterUserName'><a href='http://pikabu.ru/profile/"+userName+"' target='blank'>"+userName+"</a></div>";
+    $(navigator).addClass('boosterMenuOut').prepend(userLink).after('<div id="boosterMenu" class="boosterMenuOut"></div>');
 
-    $('#boosterUserName').hover(function() {
-        $('#boosterMenu').fadeIn('fast');
-    },function() {
-        $('#boosterMenu').hover(function() {}, function() {
-            $('#boosterMenu').fadeOut('fast');
-        });
+    $('#boosterMenu').html($('.personals').html()).css({
+        'width': $(navigator).width(),
+        'right': (parseInt($(navigator).css('right')) + 7) + 'px',
+        'top': $(navigator).innerHeight() - 1
     });
+
+    $(document).on('mouseenter','#boosterUserName',function() {
+        $('#boosterMenu').fadeIn(300);
+    });
+
+    $(document).on('mouseleave','.boosterMenuOut',function(e) {
+        var elem = e.toElement || e.relatedTarget;
+        if (!$(elem).hasClass('boosterMenuOut')) $('#boosterMenu').fadeOut(300);
+    });
+
 }
