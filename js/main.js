@@ -1,71 +1,90 @@
-var postIndex = 0;
-var currentPost = $("#stories_container .inner_wrap:eq("+postIndex+")").attr("id");
+var currentPost = $(".b-story")[0];
 //if (document.location.href.match(/*pikabu.ru/story*/)) currentPost = $("#wrap .inner_wrap").attr("id");
 
 runScroller();
-//runKeyMapper();
+runKeyMapper();
 runMenu();
 
 function runScroller() {
-    //var action = 'save';
     $(document).scroll(function (){
+        if (!$(currentPost).length) currentPost = $(".b-story")[0];
         var docViewTop = $(window).scrollTop();
-        var elemTop = $("#"+currentPost).offset().top;
-        var elemBottom = elemTop + $("#"+currentPost).height();
+        var elemTop = $(currentPost).offset().top;
+        var elemBottom = elemTop + $(currentPost).height();
         var idSave;
 
         if (elemTop <= docViewTop) {
-            //var storyid = currentPost.substr(currentPost.lastIndexOf('_')+1);
-            idSave = $("#" + currentPost + " .scrollBtn").attr("id");
-            $("#" + currentPost + " .scrollBtnStyle").attr("id","boosterWrap").removeClass("scrollBtn").css({"top":"80px","left":"83px","position":"fixed"});
-            $("#" + currentPost + " .rating").css("position","fixed").css("top","0px").next().css("padding-left","67px").css("height", "65px");
-            $("#" + currentPost + " .pg_click").removeClass('pg_click');
-            $("#" + currentPost + " #story_main_t").addClass('pg_click');
-            $('#' + currentPost + " .curs").css("cursor","pointer");/*.attr('onclick','SaveStory('+storyid+',\''+action+'\')').click(function() {
-             $("#" + currentPost + " .info>a").each(function() {
-             if ($(this).css('display') == "inline") {
-             var id = $(this).attr("id");
-             action = id.substr(0,id.indexOf('_'));
-             }
-             });
-             });*/
+            idSave = $(currentPost).find(".scrollBtn").attr("id");
+            $(currentPost).find(".scrollBtnStyle").attr("id","boosterWrap").removeClass("scrollBtn").css({"top":"80px","left":"83px","position":"fixed"});
+            $(currentPost).find(".rating").css("position","fixed").css("top","0px").next().css("padding-left","67px").css("height", "65px");
+            $(currentPost).find(".pg_click").removeClass('pg_click');
+            $(currentPost).find("#story_main_t").addClass('pg_click');
+            $(currentPost).find(".curs").css("cursor","pointer");
             if (elemBottom - 73 <= docViewTop) {
-                $("#" + currentPost + " .rating").css("position","static").next().css("padding-left","0px");
+                $(currentPost).find(".rating").css("position","static").next().css("padding-left","0px");
             } else {
-                $("#" + currentPost + " .rating").css("position","fixed").css("top","0px").next().css("padding-left","67px").css("height", "65px");
+                $(currentPost).find(".rating").css("position","fixed").css("top","0px").next().css("padding-left","67px").css("height", "65px");
             }
         }
 
         if (elemBottom <= docViewTop) {
-            $("#" + currentPost + " .scrollBtnStyle").attr("id",idSave).addClass("scrollBtn");
-            $("#" + currentPost + " .rating").css("position","static").next().css("padding-left","0px");
-            $("#" + currentPost + " tr[attr=out]").addClass('pg_click');
-            $("#" + currentPost + " #story_main_t").removeClass('pg_click');
-            currentPost = $("#stories_container .inner_wrap:eq("+(++postIndex)+")").attr("id");
-            if ($("#stories_container .inner_wrap:eq("+(postIndex)+")").hasClass("adv_wrap")) {
-                currentPost = $("#stories_container .inner_wrap:eq("+(++postIndex)+")").attr("id");
-            }
+            $(currentPost).find(".scrollBtnStyle").attr("id",idSave).addClass("scrollBtn");
+            $(currentPost).find(".rating").css("position","static").next().css("padding-left","0px");
+            $(currentPost).find("tr[attr=out]").addClass('pg_click');
+            $(currentPost).find("#story_main_t").removeClass('pg_click');
+            stopAllMedia(currentPost);
+            currentPost = $(currentPost).nextAll('.b-story')[0];
         }
 
         if (elemTop > docViewTop) {
-            $("#" + currentPost + " .scrollBtnStyle").attr("id",idSave).addClass("scrollBtn");
-            $("#" + currentPost + " tr[attr=out]").addClass('pg_click');
-            $("#" + currentPost + " #story_main_t").removeClass('pg_click');
-            $("#" + currentPost + " .rating").css("position","static").next().css("padding-left","0px");
-            --postIndex;
-            if (postIndex < 0) postIndex = 0;
-            currentPost = $("#stories_container .inner_wrap:eq("+postIndex+")").attr("id");
-            if ($("#stories_container .inner_wrap:eq("+postIndex+")").hasClass("adv_wrap")) {
-                --postIndex;
-                if (postIndex < 0) postIndex = 0;
-                currentPost = $("#stories_container .inner_wrap:eq("+postIndex+")").attr("id");
+            $(currentPost).find(".scrollBtnStyle").attr("id",idSave).addClass("scrollBtn");
+            $(currentPost).find("tr[attr=out]").addClass('pg_click');
+            $(currentPost).find("#story_main_t").removeClass('pg_click');
+            $(currentPost).find(".rating").css("position","static").next().css("padding-left","0px");
+            if ($(currentPost).index() > 0) {
+                currentPost = $(currentPost).prevAll('.b-story')[0];
             }
         }
     });
 }
 
-function autoPlayVideo(post,vcode, width, height){
-    $("#" + currentPost + " .videoDiv").html('<iframe width="'+width+'" height="'+height+'" src="https://www.youtube.com/embed/'+vcode+'?autoplay=1&loop=1&rel=0&wmode=transparent" frameborder="0" allowfullscreen wmode="Opaque"></iframe>');
+function stopAllMedia(currentPost) {
+    $(currentPost).find(".playGif").css("display","block");
+    $(currentPost).find(".showGif").css("display","none");
+    if ($(currentPost).find('.videoDiv').hasClass('b-video__wrapper')) {
+        var back = $(currentPost).find('.b-video__wrapper');
+        var url = $(back).attr('data-url');
+        if (url.indexOf('youtube') > -1) {
+            if ($(currentPost).find(".b-video__preview").length) {
+                if ($(currentPost).find(".b-video__preview").css("display") == "none") {
+                    $(back).find('.b-video__preview').css({'display':'block'});
+                    $(back).find('iframe').remove();
+                }
+            } else {
+                if ($(currentPost).hasClass('playing')) $(currentPost).removeClass('playing').find('iframe').attr('src',url+'?showinfo=0&amp;fs=1&amp;autoplay=0&amp;enablejsapi=1&amp;origin=http%3A%2F%2Fpikabu.ru');
+            }
+        }
+        if (url.indexOf('coub') > -1) {
+            if ($(currentPost).find(".b-video__preview").length) {
+                if ($(currentPost).find(".b-video__preview").css("display") == "none") {
+                    $(back).find('.b-video__preview').css({'display':'block'});
+                    $(back).find('iframe').remove();
+                }
+            } else {
+                if ($(currentPost).hasClass('playing')) $(currentPost).removeClass('playing').find('iframe').attr('src',url+'?muted=false&autostart=false&originalSize=false&hideTopBar=true');
+            }
+        }
+        if (url.indexOf('vimeo') > -1) {
+            if ($(currentPost).find(".b-video__preview").length) {
+                if ($(currentPost).find(".b-video__preview").css("display") == "none") {
+                    $(back).find('.b-video__preview').css({'display':'block'});
+                    $(back).find('iframe').remove();
+                }
+            } else {
+                if ($(currentPost).hasClass('playing')) $(currentPost).removeClass('playing').find('iframe').attr('src',url+'?api=1&autoplay=0&autohide=1&wmode=opaque&showinfo=0&fs=1&player_id=player_'+$(back).attr('data-id'));
+            }
+        }
+    }
 }
 
 function runKeyMapper() {
@@ -85,18 +104,62 @@ function runKeyMapper() {
     $(document).keypress(function(e) {
         if (!focused) {
             var code = (e.keyCode ? e.keyCode : e.which);
-            if (code == 114 || code == 1082) {/*
-                if ($("#" + currentPost + " .playGif").css("display") == "none") {
-                    $("#" + currentPost + " .playGif").css("display","block");
-                    $("#" + currentPost + " .showGif").css("display","none");
+            if (code == 114 || code == 1082) {
+                if ($(currentPost).find(".playGif").css("display") == "none") {
+                    $(currentPost).find(".playGif").css("display","block");
+                    $(currentPost).find(".showGif").css("display","none");
                 } else {
-                    $("#" + currentPost + " .playGif").css("display","none");
-                    $("#" + currentPost + " .showGif").css("display","block");
-                }*/
-                if ($("#" + currentPost + " .videoDiv iframe").length) {
-                    var vcode = $("#" + currentPost + " iframe").attr('src').substr($("#" + currentPost + " iframe").attr('src').indexOf('embed/')+6);
-                    alert(vcode);
-                    autoPlayVideo(currentPost,vcode,'600','475');
+                    $(currentPost).find(".playGif").css("display","none");
+                    $(currentPost).find(".showGif").css("display","block");
+                }
+                if ($(currentPost).find('.videoDiv').hasClass('b-video__wrapper')) {
+                    var back = $(currentPost).find('.b-video__wrapper');
+                    var url = $(back).attr('data-url');
+                    if (url.indexOf('youtube') > -1) {
+                        if ($(currentPost).find(".b-video__preview").length) {
+                            if ($(currentPost).find(".b-video__preview").css("display") == "none") {
+                                $(back).find('.b-video__preview').css({'display':'block'});
+                                $(back).find('iframe').remove();
+                            } else {
+                                $(back).find('.b-video__preview').css({'display':'none'});
+                                $(back).append('<iframe id="player_'+$(back).attr('data-id')+'" frameborder="0" allowfullscreen="1" title="YouTube video player" width="585" height="'+$(back).find('.b-video__preview').height()+'" ' +
+                                    'src="'+url+'?showinfo=0&amp;fs=1&amp;autoplay=1&amp;enablejsapi=1&amp;origin=http%3A%2F%2Fpikabu.ru"></iframe>');
+                            }
+                        } else {
+                            if ($(currentPost).hasClass('playing')) $(currentPost).removeClass('playing').find('iframe').attr('src',url+'?showinfo=0&amp;fs=1&amp;autoplay=0&amp;enablejsapi=1&amp;origin=http%3A%2F%2Fpikabu.ru');
+                                else $(currentPost).addClass('playing').find('iframe').attr('src',url+'?showinfo=0&amp;fs=1&amp;autoplay=1&amp;enablejsapi=1&amp;origin=http%3A%2F%2Fpikabu.ru');
+                        }
+                    }
+                    if (url.indexOf('coub') > -1) {
+                        if ($(currentPost).find(".b-video__preview").length) {
+                            if ($(currentPost).find(".b-video__preview").css("display") == "none") {
+                                $(back).find('.b-video__preview').css({'display':'block'});
+                                $(back).find('iframe').remove();
+                            } else {
+                                $(back).find('.b-video__preview').css({'display':'none'});
+                                $(back).append('<iframe id="player_'+$(back).attr('data-id')+'" frameborder="0" allowfullscreen="true" webkitallowfullscreen="true" mozallowfullscreen="true" width="585" height="'+$(back).find('.b-video__preview').height()+'"' +
+                                    'src="'+url+'?muted=false&autostart=true&originalSize=false&hideTopBar=true"></iframe>');
+                            }
+                        } else {
+                            if ($(currentPost).hasClass('playing')) $(currentPost).removeClass('playing').find('iframe').attr('src',url+'?muted=false&autostart=false&originalSize=false&hideTopBar=true');
+                            else $(currentPost).addClass('playing').find('iframe').attr('src',url+'?muted=false&autostart=true&originalSize=false&hideTopBar=true');
+                        }
+                    }
+                    if (url.indexOf('vimeo') > -1) {
+                        if ($(currentPost).find(".b-video__preview").length) {
+                            if ($(currentPost).find(".b-video__preview").css("display") == "none") {
+                                $(back).find('.b-video__preview').css({'display':'block'});
+                                $(back).find('iframe').remove();
+                            } else {
+                                $(back).find('.b-video__preview').css({'display':'none'});
+                                $(back).append('<iframe id="player_'+$(back).attr('data-id')+'" frameborder="0" allowfullscreen="true" webkitallowfullscreen="true" mozallowfullscreen="true" width="585" height="'+$(back).find('.b-video__preview').height()+'"' +
+                                    'src="'+url+'?api=1&autoplay=1&autohide=1&wmode=opaque&showinfo=0&fs=1&player_id=player_'+$(back).attr('data-id')+'"></iframe>');
+                            }
+                        } else {
+                            if ($(currentPost).hasClass('playing')) $(currentPost).removeClass('playing').find('iframe').attr('src',url+'?api=1&autoplay=0&autohide=1&wmode=opaque&showinfo=0&fs=1&player_id=player_'+$(back).attr('data-id'));
+                            else $(currentPost).addClass('playing').find('iframe').attr('src',url+'?api=1&autoplay=1&autohide=1&wmode=opaque&showinfo=0&fs=1&player_id=player_'+$(back).attr('data-id'));
+                        }
+                    }
                 }
             }
         }
