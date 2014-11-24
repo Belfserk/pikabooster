@@ -1,0 +1,47 @@
+#boosterMenu {
+  color: #686969;
+  font-family: 'Tahoma', sans-serif;
+  font-size: 13px;
+  border-radius: 0px 0px 6px 6px;
+  background-color: #fafafa;
+  box-shadow: #a3a3a3 0px 0px 2px;
+  display: none;
+  position: fixed;
+  z-index: 50;
+}
+#boosterMenu ul {
+  list-style: none;
+  padding: 0;
+}
+#boosterMenu li {
+  padding: 0 0 0 15px;
+}
+#boosterMenu span {
+  color: #686969;
+  text-decoration: none;
+  font-size: 11px;
+  line-height: 17px;
+  padding: 0 0 0 15px;
+}
+#boosterMenu a {
+  color: #5190b8;
+  text-decoration: none;
+  font-size: 11px;
+  line-height: 17px;
+  padding: 0 0 0 15px;
+}
+#boosterMenu a:hover {
+  text-decoration: underline;
+}
+#boosterUserName {
+  font: normal 13px Tahoma;
+  margin: 3px 5px 0 5px;
+  float: left;
+}
+#boosterUserName a {
+  color: #5190b8;
+  text-decoration: none;
+}
+.rating {
+  z-index: 1000;
+}

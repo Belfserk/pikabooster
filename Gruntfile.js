@@ -6,24 +6,24 @@ module.exports = function(grunt) {
         concat: {
             dist: {
                 src: [
-                    'js/libs/*.js',
-                    'js/main.js'
+                    'source/data/js/libs/*.js',
+                    'source/data/js/main.js'
                 ],
-                dest: 'js/build/production.js'
+                dest: 'source/data/js/build/production.js'
             }
         },
 
         uglify: {
             build: {
-                src: 'js/build/production.js',
-                dest: 'js/build/production.min.js'
+                src: 'source/data/js/build/production.js',
+                dest: 'source/data/js/build/production.min.js'
             }
         },
 
         less: {
             development: {
                 files: {
-                    "css/main.css": "less/main.less"
+                    "css/main.css": "source/data/less/main.less"
                 }
             }
         },
@@ -31,8 +31,8 @@ module.exports = function(grunt) {
         watch: {
             scripts: {
                 files: [
-                    'js/*.js',
-                    'less/*.less'
+                    'source/data/js/*.js',
+                    'source/data/less/*.less'
                 ],
                 tasks: ['concat', 'uglify', 'less'],
                 options: {
