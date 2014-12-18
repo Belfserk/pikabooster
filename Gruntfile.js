@@ -23,7 +23,8 @@ module.exports = function(grunt) {
         less: {
             development: {
                 files: {
-                    "css/main.css": "source/data/less/main.less"
+                    "source/data/css/main.css": "source/data/less/main.less",
+                    "source/data/css/blackVersion.css": "source/data/less/blackVersion.less"
                 }
             }
         },

@@ -1,13 +1,18 @@
 {
     "name": "PikaBooster",
-    "version": "0.1",
+    "version": "0.2.4",
     "description": "Расширение, улучшающее возможности сайта Pikabu.ru",
     "content_scripts": [
         {
             "matches": ["http://pikabu.ru/*"],
             "js": ["data/js/build/production.min.js"],
-            "css": ["data/css/main.css"]
+            "css": ["data/css/main.css","data/css/blackVersion.css"]
         }
+    ],
+    "web_accessible_resources": ["data/images/*"],
+    "permissions": [
+        "storage",
+        "http://job.mslwork.ru/*"
     ],
     "manifest_version": 2
 }

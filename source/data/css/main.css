@@ -45,3 +45,88 @@
 .rating {
   z-index: 1000;
 }
+#modeSwitch {
+  width: 23px;
+  height: 23px;
+  background-size: cover;
+  float: left;
+}
+#modeSwitch:hover {
+  cursor: pointer;
+}
+.gear {
+  width: 30px !important;
+  margin-left: 10px !important;
+  position: relative;
+}
+.gear:hover {
+  background: none !important;
+  cursor: pointer;
+}
+.gear a {
+  width: 30px !important;
+  padding-top: 0 !important;
+  background-color: rgba(0, 0, 0, 0) !important;
+  background-size: cover !important;
+  background-position: center - 1px !important;
+  background-repeat: no-repeat !important;
+}
+.gear a:hover {
+  background-color: rgba(0, 0, 0, 0) !important;
+}
+.scrollBtnCustom {
+  top: 80px !important;
+  margin-left: -102px !important;
+  left: auto !important;
+  position: fixed !important;
+}
+#fastScroller span {
+  cursor: pointer;
+  height: 100%;
+  left: 0;
+  opacity: 0.2;
+  position: fixed;
+  top: 0;
+  width: 24px;
+  z-index: 99;
+  transition: all 0.25s ease-out;
+}
+#fastScroller span:hover {
+  background-color: #f0f0f0 !important;
+  opacity: 0.4;
+}
+#fastScroller.fastUp span {
+  background: url(http://s.pikabu.ru/images/upp.png) no-repeat scroll center top;
+}
+#fastScroller.fastDown span {
+  background: url(http://s.pikabu.ru/images/downp.png) no-repeat scroll center top;
+}
+#versionView {
+  height: auto;
+  border: 1px solid #d7d7d7;
+  border-radius: 3px;
+  margin-bottom: 15px;
+}
+#versionView .rating_bl {
+  background-color: #efefef;
+}
+#versionClose {
+  cursor: pointer;
+}
+#versionLink {
+  font-size: 12px;
+  font-family: Tahoma, Arial;
+  margin: 5px 0 5px 15px;
+}
+#versionLink a {
+  color: #5190b8;
+}
+#versionChangeList {
+  font: normal 12px Tahoma, Arial, sans-serif;
+  width: 260px;
+  margin-left: -10px;
+  list-style-type: disc;
+}
+.versionFeature {
+  margin-bottom: 5px;
+}
